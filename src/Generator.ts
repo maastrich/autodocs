@@ -8,7 +8,7 @@ export class Generator {
   private openai: OpenAI;
   constructor(private config: Config["openai"]) {
     this.openai = new OpenAI({
-      apiKey: config.apiKey,
+      apiKey: config.apiKey ?? undefined,
     });
   }
   public async generate({
@@ -31,7 +31,13 @@ export class Generator {
       stop,
     });
     this.completions.push(completion);
-    return completion.choices[0].message.content.trim().split("\n");
+    const { choices } = completion;
+    if (!choices) {
+      throw new Error("No completion");
+    }
+    return (
+      choices[0].message.content?.trim().split("\n") ?? new Array<string>()
+    );
   }
 
   public getComsumption() {

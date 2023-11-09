@@ -9,7 +9,7 @@ export type Config = {
      * The API key to use for OpenAI
      * @default process.env.OPENAI_API_KEY
      */
-    apiKey: string;
+    apiKey: string | null;
     /**
      * The model to use for the prompt
      * @default "gpt-3.5-turbo"
@@ -42,7 +42,7 @@ type RecursivePartial<T> = {
 };
 
 const defaultOpenAIConfig: Config["openai"] = {
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY ?? null,
   model: "gpt-3.5-turbo",
   prompt:
     "Generate TSDoc for the following code, do not provide the leading /* and trailing */ but include the *. Be concise but precise, summarize the function in a few sentences, do not include the function name",
@@ -53,7 +53,7 @@ const defaultIncludes = ["src/**/*.{ts,tsx}"];
 
 export function defineConfig(config: RecursivePartial<Config>): Config {
   const {
-    excludes = [],
+    excludes = new Array<string>(),
     includes = defaultIncludes,
     openai = defaultOpenAIConfig,
   } = config;
@@ -66,8 +66,8 @@ export function defineConfig(config: RecursivePartial<Config>): Config {
     );
   }
   return {
-    includes,
-    excludes: excludes ?? [],
+    includes: includes,
+    excludes: excludes ?? new Array<string>(),
     openai: {
       ...defaultOpenAIConfig,
       ...openai,

@@ -82,10 +82,11 @@ export class TSFile {
           return;
         }
         tsfile.comments.push({
-          loc: {
-            start: locStart,
-            end: locEnd,
-          },
+          loc: locStart &&
+            locEnd && {
+              start: locStart,
+              end: locEnd,
+            },
           end,
           start,
           hash: "",
@@ -100,7 +101,11 @@ export class TSFile {
       `Parsing file ${this.path} { content-length: ${this.content.length}, comments: ${this.comments.length} }`,
     );
     for (const comment of this.comments) {
-      const { node } = findNodeAfter(ast, comment.end);
+      const { node } = findNodeAfter(ast, comment.end) ?? {};
+      if (!node) {
+        logger.debug(`Comment ${comment.hash} has no associated node`);
+        continue;
+      }
       const after = this.content.slice(node.start, node.end);
       comment.after = after;
       const prev = retrieveHash(comment.tsdoc).trim();
@@ -116,7 +121,8 @@ export class TSFile {
   }
 
   public async generate() {
-    if (!this.generator) {
+    const generator = this.generator;
+    if (!generator) {
       throw new Error("No generator provided");
     }
     const newComments = await Promise.all(
@@ -126,7 +132,11 @@ export class TSFile {
             logger.debug(`Comment ${comment.hash} is already synched`);
             throw new Error("Already synched");
           }
-          const docstring = await this.generator.generate({
+          if (!comment.after) {
+            logger.debug(`Comment ${comment.hash} has no after`);
+            throw new Error("No after");
+          }
+          const docstring = await generator.generate({
             messages: [comment.after],
             stop: ["*/"],
           });
