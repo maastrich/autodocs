@@ -1,0 +1,26 @@
+{
+  "name": "@maastrich/autodocs",
+  "author": "Mathis Pinsault @maastrich",
+  "main": "./src/index.ts",
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "prettier": "prettier --write ."
+  },
+  "dependencies": {
+    "@microsoft/tsdoc": "^0.14.2",
+    "acorn": "^8.11.2",
+    "acorn-typescript": "^1.4.10",
+    "acorn-walk": "^8.3.0",
+    "cac": "^6.7.14",
+    "glob": "^10.3.10",
+    "node-emoji": "^2.1.0",
+    "openai": "^4.16.1"
+  },
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.2.1",
+    "@types/node": "^20.9.0",
+    "prettier": "^3.0.3",
+    "typescript": "^5.2.2"
+  }
+}
