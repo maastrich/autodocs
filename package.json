@@ -1,11 +1,14 @@
 {
   "name": "@maastrich/autodocs",
   "author": "Mathis Pinsault @maastrich",
+  "bin": {
+    "autodocs": "./src/index.ts"
+  },
   "main": "./src/index.ts",
   "type": "module",
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "prettier": "prettier --write ."
+    "prettier": "prettier --write **/*.{ts,json,md}"
   },
   "dependencies": {
     "@microsoft/tsdoc": "^0.14.2",

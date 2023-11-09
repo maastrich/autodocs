@@ -23,7 +23,7 @@ cli
       logger.debugEnabled = true;
     }
     const config = await retrieveConfig(
-      options.config === true ? undefined : options.config
+      options.config === true ? undefined : options.config,
     );
     const fileNames = await listFiles(config.includes, config.excludes);
     logger.debug(`Found ${fileNames.length} files`);
@@ -47,7 +47,7 @@ cli.command("generate", "Generate the docs").action(async (options) => {
     logger.debugEnabled = true;
   }
   const config = await retrieveConfig(
-    options.config === false ? false : options.config
+    options.config === false ? false : options.config,
   );
   const fileNames = await listFiles(config.includes, config.excludes);
   logger.debug(`Found ${fileNames.length} files`);
@@ -72,7 +72,7 @@ cli.command("generate", "Generate the docs").action(async (options) => {
     } completion tokens): $${consumption.cost.toLocaleString(undefined, {
       minimumFractionDigits: 2,
       maximumFractionDigits: 4,
-    })}`
+    })}`,
   );
 });
 
