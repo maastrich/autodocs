@@ -3,6 +3,14 @@ import { join } from "path";
 import { logger } from "./logger.js";
 import { models } from "./models.js";
 
+const defaultPompt = `
+Generate TSDoc for the following code as raw content - no block decoration * using this template (do not include types):
+{summary}
+@returns {returns}
+@throws {throws}
+@description {description}
+` as const;
+
 export type Config = {
   openai: {
     /**
@@ -17,7 +25,6 @@ export type Config = {
     model: keyof typeof models;
     /**
      * The prefix to use for the prompt
-     * @default "Generate TSDoc for the following code as raw content (no block decoration '*'). Be concise but precise, summarize the function in a few sentences, do not include the function name"
      */
     prompt: string;
 
@@ -44,8 +51,7 @@ type RecursivePartial<T> = {
 const defaultOpenAIConfig: Config["openai"] = {
   apiKey: process.env.OPENAI_API_KEY ?? null,
   model: "gpt-3.5-turbo",
-  prompt:
-    "Generate TSDoc for the following code, do not provide the leading /* and trailing */ but include the *. Be concise but precise, summarize the function in a few sentences, do not include the function name",
+  prompt: defaultPompt,
   maxTokens: 4000,
 };
 

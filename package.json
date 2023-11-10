@@ -1,14 +1,23 @@
 {
   "name": "@maastrich/autodocs",
-  "author": "Mathis Pinsault @maastrich",
-  "bin": {
-    "autodocs": "./index.ts"
-  },
-  "main": "./index.ts",
+  "license": "MIT",
+  "author": "Maastrich @maastrich",
   "type": "module",
+  "main": "src/index.ts",
+  "bin": {
+    "autodocs": "bin/autodocs"
+  },
+  "files": [
+    "src",
+    "bin"
+  ],
+  "repository": "maastrich/autodocs",
   "scripts": {
-    "typecheck": "tsc --noEmit",
-    "prettier": "prettier --write **/*.{ts,json,md}"
+    "build": "bun build --compile . --outfile=\"bin/autodocs\"",
+    "postinstall": "bun run build",
+    "prettier": "prettier --write .",
+    "semver-check": "bun run scripts/semver-check.ts",
+    "sort": "bun x sort-package-json"
   },
   "dependencies": {
     "@microsoft/tsdoc": "^0.14.2",
